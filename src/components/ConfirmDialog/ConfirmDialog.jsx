@@ -1,10 +1,18 @@
 import React from 'react'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
 
-const ConfirmDialog = () => {
+const ConfirmDialog = ({ open, title, message, onConfirm, onCancel }) => {
   return (
-    <div>
-      ConfirmDialog
-    </div>
+    <Dialog open={open} onClose={onCancel}>
+      <DialogTitle>{title}</DialogTitle>
+      <DialogContent>{message}</DialogContent>
+      <DialogActions>
+        <Button onClick={onCancel}>Cancel</Button>
+        <Button onClick={onConfirm} variant="contained" color="error">
+          Delete
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

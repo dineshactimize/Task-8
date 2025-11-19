@@ -1,106 +1,84 @@
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Button, Stack, Box } from '@mui/material';
-import { Edit, Visibility, Delete } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, IconButton, Stack, Box } from '@mui/material'
+import { Visibility, Edit, Delete } from '@mui/icons-material'
+import { useNavigate } from 'react-router-dom'
 
-function createData(id, name, calories, fat, carbs, protein) {
-  return { id, name, calories, fat, carbs, protein };
-}
+export default function ProductTable({ products = [], onDelete = () => {} }) {
+  const navigate = useNavigate()
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(5)
 
-const rows = [
-  createData(1, 'Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData(2, 'Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
-  createData(4, 'Cupcake', 305, 3.7, 67, 4.3),
-  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
-];
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage)
+  }
 
-export default function BasicTable() {
-  const handleDelete = (id) => {
-    alert(`Delete item ${id}`);
-  };
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  const empty = !products || products.length === 0
+  const visibleRows = empty ? [] : products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 
   return (
-    <Box sx={{ margin: '20px 0' }}>
-      <TableContainer component={Paper} sx={{ boxShadow: '0 4px 6px rgba(17, 196, 118, 0.1)' }}>
-        <Table sx={{ width:850,ml:40 }} aria-label="products table">
+    <Paper sx={{ width: '100%', mt: 3 }}>
+      <TableContainer sx={{ maxHeight: 600 }}>
+        <Table stickyHeader aria-label="products table">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#1976d2' }}>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Product</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Calories</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Fat (g)</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Carbs (g)</TableCell>
-              <TableCell align="right" sx={{ color: 'white', fontWeight: 'bold' }}>Protein (g)</TableCell>
-              <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold' }}>Actions</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Image</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Title</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Price</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Category</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Rating</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ 
-                  '&:hover': { backgroundColor: '#f5f5f5' },
-                  '&:last-child td, &:last-child th': { border: 0 }
-                }}
-              >
-                <TableCell component="th" scope="row" sx={{ fontWeight: 500 }}>
-                  {row.name}
+            {visibleRows.map((p) => (
+              <TableRow hover role="checkbox" tabIndex={-1} key={p.id}>
+                <TableCell>
+                  <img src={p.image} alt={p.title} height="50" style={{ objectFit: 'contain' }} />
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.carbs}</TableCell>
-                <TableCell align="right">{row.protein}</TableCell>
+                <TableCell sx={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.title}</TableCell>
+                <TableCell>${Number(p.price).toFixed(2)}</TableCell>
+                <TableCell>{p.category}</TableCell>
+                <TableCell>{p.rating?.rate ?? '-'}</TableCell>
                 <TableCell align="center">
                   <Stack direction="row" spacing={1} justifyContent="center">
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      startIcon={<Visibility />}
-                      component={Link}
-                      to={`/admin/products/${row.id}`}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      View
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="success"
-                      startIcon={<Edit />}
-                      component={Link}
-                      to={`/admin/products/edit/${row.id}`}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Edit
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      color="error"
-                      startIcon={<Delete />}
-                      onClick={() => handleDelete(row.id)}
-                      sx={{ textTransform: 'none' }}
-                    >
-                      Delete
-                    </Button>
+                    <IconButton size="small" color="primary" onClick={() => navigate(`/admin/products/${p.id}`)}>
+                      <Visibility />
+                    </IconButton>
+                    <IconButton size="small" color="info" onClick={() => navigate(`/admin/products/${p.id}/edit`)}>
+                      <Edit />
+                    </IconButton>
+                    <IconButton size="small" color="error" onClick={() => onDelete(p.id)}>
+                      <Delete />
+                    </IconButton>
                   </Stack>
                 </TableCell>
               </TableRow>
             ))}
+
+            {empty && (
+              <TableRow>
+                <TableCell colSpan={6} align="center" sx={{ py: 4 }}>
+                  No products found
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
-      
-    </Box>
-
-
-
-  );
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={products.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
+  )
 }

@@ -32,22 +32,21 @@ export default function ProductForm({ initialValues, onSubmit, isEdit }) {
     return Object.keys(e).length === 0
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault()
     if (!validate()) return
+    await onSubmit(form) 
 
-    // If parent passed an onSubmit handler, call it (expected to return a Promise).
-    // Otherwise, simulate success and navigate back.
-    const submitPromise = onSubmit ? onSubmit(form) : Promise.resolve({ data: form })
+    // const submitPromise = onSubmit ? onSubmit(form) : Promise.resolve({ data: form })
 
-    submitPromise
-      .then(() => {
-        setSnackbar({ open: true, message: isEdit ? 'Product updated' : 'Product created', severity: 'success' })
-        setTimeout(() => navigate('/admin/products'), 800)
-      })
-      .catch(() => {
-        setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' })
-      })
+    // submitPromise
+    //   .then(() => {
+    //     setSnackbar({ open: true, message: isEdit ? 'Product updated' : 'Product created', severity: 'success' })
+    //     setTimeout(() => navigate('/admin/products'), 800)
+    //   })
+    //   .catch(() => {
+    //     setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' })
+    //   })
   }
 
   return (
