@@ -10,23 +10,17 @@ import { deleteProductDataActionInitiate } from '../../redux/actions/deleteProdu
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([])
-  const [filtered, setFiltered] = useState([])
+  // const [filtered, setFiltered] = useState([])
   const [searchText, setSearchText] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('')
+  // const [selectedCategory, setSelectedCategory] = useState('')
   const [confirmDialog, setConfirmDialog] = useState({ open: false, productId: null })
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
 
   const handleSearch = (e) => {
     const text = e.target.value
     setSearchText(text)
-    filterProducts(text, selectedCategory)
   }
 
-  const filterProducts = (search) => {
-    let result = products
-    if (search) result = result.filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
-    setFiltered(result)
-  }
 
   const handleDeleteClick = (id) => {
     setConfirmDialog({ open: true, productId: id })

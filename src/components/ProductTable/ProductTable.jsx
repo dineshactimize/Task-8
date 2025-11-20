@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, IconButton, Stack, Box } from '@mui/material'
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, IconButton, Stack } from '@mui/material'
 import { Visibility, Edit, Delete } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 

@@ -27,10 +27,11 @@ function AdminDashboard() {
       <Typography variant="h3" align="center" mb={4} sx={{ fontWeight: 'bold' }}>
         Admin Dashboard
       </Typography>
+    <Box sx={{display:'flex',justifyContent:'center'}}>
 
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
-          <Paper sx={{ row: 3, textAlign: 'center', backgroundColor: '#93c9edff' }}>
+          <Paper  sx={{ row: 3, textAlign: 'center', backgroundColor: '#86d4f6ff' }}>
             <Typography variant="h6" color="textSecondary">
               Total Products
             </Typography>
@@ -41,7 +42,7 @@ function AdminDashboard() {
         </Grid>
 
         <Grid item xs={12} sm={6}>
-          <Paper sx={{ row: 3, textAlign: 'center', backgroundColor: '#7db0eeff' }}>
+          <Paper sx={{ row: 3, textAlign: 'center', backgroundColor: '#86d4f6ff' }}>
             <Typography variant="h6" color="textSecondary">
               Total Categories
             </Typography>
@@ -51,6 +52,7 @@ function AdminDashboard() {
           </Paper>
         </Grid>
       </Grid>
+    </Box>
 
       <Stack direction="row" spacing={2} sx={{ mt: 4, justifyContent: 'center' }}>
         <Button variant="contained" size="large"component={Link} to="/admin/products"sx={{ textTransform: 'none' }}>

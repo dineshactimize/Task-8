@@ -1,8 +1,7 @@
 import React from 'react'
 import { AppBar, Toolbar, Box, Button } from '@mui/material'
 import { Link } from 'react-router-dom'
-import DashboardIcon from '@mui/icons-material/Dashboard'
-import StorageIcon from '@mui/icons-material/Storage'
+
 
 const Navbar = () => {
   return (

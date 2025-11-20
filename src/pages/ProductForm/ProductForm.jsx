@@ -5,20 +5,19 @@ import { useNavigate } from 'react-router-dom'
 export default function ProductForm({ initialValues, onSubmit, isEdit }) {
   const navigate = useNavigate()
 
-  const defaults = {
+  const [form, setForm] = useState({
     title: '',
     price: '',
     description: '',
     category: '',
     image: '',
-  }
-
-  const [form, setForm] = useState(initialValues || defaults)
+  })
   const [errors, setErrors] = useState({})
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
 
   useEffect(() => {
-    setForm(initialValues || defaults)
+    if(initialValues)
+    setForm(initialValues)
   }, [initialValues])
 
   const validate = () => {
