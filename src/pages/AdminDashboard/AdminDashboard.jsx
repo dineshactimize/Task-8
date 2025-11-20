@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, Box, Paper, Grid, Button, Stack } from '@mui/material'
 import { Link } from 'react-router-dom'
-import Loader from '../../components/Loader/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProductDataActionInitiate } from '../../redux/actions/getProductAction'
 

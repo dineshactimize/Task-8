@@ -35,18 +35,13 @@ export default function ProductForm({ initialValues, onSubmit, isEdit }) {
   const handleSubmit = async(e) => {
     e.preventDefault()
     if (!validate()) return
-    await onSubmit(form) 
-
-    // const submitPromise = onSubmit ? onSubmit(form) : Promise.resolve({ data: form })
-
-    // submitPromise
-    //   .then(() => {
-    //     setSnackbar({ open: true, message: isEdit ? 'Product updated' : 'Product created', severity: 'success' })
-    //     setTimeout(() => navigate('/admin/products'), 800)
-    //   })
-    //   .catch(() => {
-    //     setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' })
-    //   })
+    try {
+      await onSubmit(form)
+      setSnackbar({ open: true, message: isEdit ? 'Product updated' : 'Product created', severity: 'success' })
+      setTimeout(() => navigate('/admin/products'), 800)
+    } catch {
+      setSnackbar({ open: true, message: 'Something went wrong', severity: 'error' })
+    }
   }
 
   return (

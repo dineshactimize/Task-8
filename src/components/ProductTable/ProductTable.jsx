@@ -4,6 +4,7 @@ import { Visibility, Edit, Delete } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 
 export default function ProductTable({ products = [], onDelete = () => {} }) {
+  console.log("products",products)
   const navigate = useNavigate()
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
@@ -30,7 +31,6 @@ export default function ProductTable({ products = [], onDelete = () => {} }) {
               <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Title</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Price</TableCell>
               <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Category</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Rating</TableCell>
               <TableCell align="center" sx={{ color: 'white', fontWeight: 'bold', backgroundColor: '#1976d2' }}>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -41,9 +41,8 @@ export default function ProductTable({ products = [], onDelete = () => {} }) {
                   <img src={p.image} alt={p.title} height="50" style={{ objectFit: 'contain' }} />
                 </TableCell>
                 <TableCell sx={{ maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.title}</TableCell>
-                <TableCell>${Number(p.price).toFixed(2)}</TableCell>
+                <TableCell>₹{Number(p.price).toFixed(2)}</TableCell>
                 <TableCell>{p.category}</TableCell>
-                <TableCell>{p.rating?.rate ?? '-'}</TableCell>
                 <TableCell align="center">
                   <Stack direction="row" spacing={1} justifyContent="center">
                     <IconButton size="small" color="primary" onClick={() => navigate(`/admin/products/${p.id}`)}>

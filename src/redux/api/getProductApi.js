@@ -4,8 +4,8 @@ const endPoints = "/products";
 export const fetchProductData = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("this is get call in API---->",endPoints);
-      const response = await api.get(`${endPoints}`);
+      console.log("this is get call in API---->", endPoints);
+      const response = await api.get(`${endPoints}.json`);
       console.log("fetched data", response);
       if (response && response.data) {
         const fetchedData = Object.keys(response.data).map(key => ({

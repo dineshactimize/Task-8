@@ -6,16 +6,9 @@ import store from './redux/store'
 const App = () => {
   return (
     <div>
-    
-
-
      <Provider store={store}>
       <AppRouter/>
-    </Provider>
-
-
-     
-     
+    </Provider> 
     </div>
   )
 }

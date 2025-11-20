@@ -8,12 +8,10 @@ import ProductEdit from '../pages/ProductEdit/ProductEdit'
 import ProductDetails from '../pages/ProductDetails/ProductDetails'
 import { useDispatch } from 'react-redux'
 import { postProductDataActionInitiate } from '../redux/actions/addProductAction'
-// import { createProduct } from '../api/products.api'
 
 const AppRouter = () => {
   const dispatch = useDispatch();
   const handleCreateProduct = async(formData) => {
-    // return createProduct(formData)
     await dispatch(postProductDataActionInitiate(formData))
   }
 

@@ -1,17 +1,16 @@
 import API from "../../api/CommonApi";
 const api = new API();
-const endPoints = "/products/:id";
+const endPoints = "/products";
 
 export const putProductApi = async (productdata, id) => {
 
     return new Promise(async (resolve, reject) => {
         try {
           console.log("this is put call in API---->");
-          const response = await api.put(`${endPoints}/${id}`,productdata);
+          const response = await api.put(`${endPoints}/${id}.json`, productdata);
 
           console.log(" put response", response);
           if (response && response.data) {
-           
             resolve(response);
             console.log("put response",response)
             return(response)

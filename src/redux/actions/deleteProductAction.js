@@ -1,3 +1,4 @@
+import { deleteProductApi } from '../api/deleteProductApi'
 import * as types from './actionsTypes'
 
 export const deleteProductDataStart=()=>{
@@ -6,7 +7,7 @@ export const deleteProductDataStart=()=>{
 }
 }
 export const deleteProductDataSuccess=(data)=>{
-    console.log("this is delete employee reducer call---->")
+    console.log("this is delete product reducer call---->")
     return{
         type:types.DELETE_PRODUCT_DATA_SUCCESS,
         payload:data
@@ -18,16 +19,18 @@ export const deleteProductDataError=(error)=>{
         payload:error
     }
 }
-export const deleteProductDataActionInitiate = () => {
+export const deleteProductDataActionInitiate = (id) => {
   return async function (dispatch) {
     dispatch(deleteProductDataStart());
    
     try {
-      const res = await deleteProductApi();
-      dispatch(deleteProductDataSuccess(res.data.data));
+      const res = await deleteProductApi(id);
+      dispatch(deleteProductDataSuccess(res.data || {}));
+      return res;
     } catch (error) {
       console.error("deleteHomeScreenDataError error", error);
       dispatch(deleteProductDataError(error.message));
+      throw error;
     }
   };
 };

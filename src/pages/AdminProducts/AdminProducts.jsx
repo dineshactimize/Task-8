@@ -6,11 +6,11 @@ import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import Loader from '../../components/Loader/Loader'
 import { useDispatch, useSelector } from 'react-redux'
 import { getProductDataActionInitiate } from '../../redux/actions/getProductAction'
+import { deleteProductDataActionInitiate } from '../../redux/actions/deleteProductAction'
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([])
   const [filtered, setFiltered] = useState([])
-  const [loading, setLoading] = useState(true)
   const [searchText, setSearchText] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [confirmDialog, setConfirmDialog] = useState({ open: false, productId: null })
@@ -22,21 +22,28 @@ const AdminProducts = () => {
     filterProducts(text, selectedCategory)
   }
 
-  const handleCategoryFilter = (e) => {
-    const cat = e.target.value
-    setSelectedCategory(cat)
-    filterProducts(searchText, cat)
-  }
-
-  const filterProducts = (search, cat) => {
+  const filterProducts = (search) => {
     let result = products
     if (search) result = result.filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
-    if (cat) result = result.filter(p => p.category === cat)
     setFiltered(result)
   }
 
   const handleDeleteClick = (id) => {
     setConfirmDialog({ open: true, productId: id })
+  }
+
+  const handleConfirmDelete = async () => {
+    const id = confirmDialog.productId
+    try {
+      dispatch(deleteProductDataActionInitiate(id))
+      setConfirmDialog({ open: false, productId: null })
+      setSnackbar({ open: true, message: 'Product deleted', severity: 'success' })
+      dispatch(getProductDataActionInitiate())
+    } catch (error) {
+      console.error('Delete failed', error)
+      setSnackbar({ open: true, message: 'Delete failed', severity: 'error' })
+      setConfirmDialog({ open: false, productId: null })
+    }
   }
 
 
@@ -46,15 +53,24 @@ const dispatch=useDispatch();
   }, [dispatch]);
   
   const getproductdata = useSelector((state) => state.getproductdata.data);
+  const loading = useSelector((state) => state.getproductdata.loading);
+  console.log(getproductdata,"getproductdata");
+
   useEffect(()=> {
-    if (getproductdata){
+    if(searchText && searchText.length>0){
+      let result = getproductdata
+      if (searchText) result = result.filter(p => p.title.toLowerCase().includes(searchText.toLowerCase()))
+      setProducts(result)
+    }
+    else if (getproductdata){
       setProducts(getproductdata)
     }
-  },[getproductdata]);
+  },[getproductdata,searchText]);
   
-  const categories = new Set(products.map(row => row.category)).size
 
-  // if (loading) return <Loader />
+  if (loading) return <Loader />
+ 
+
 
   return (
     <Box sx={{ p: 4 }}>
@@ -80,13 +96,13 @@ const dispatch=useDispatch();
         </Button>
       </Stack>
 
-      <ProductTable products={filtered} onDelete={handleDeleteClick} />
+      <ProductTable products={products} onDelete={handleDeleteClick} />
 
       <ConfirmDialog
         open={confirmDialog.open}
         title="Delete Product"
         message="Are you sure you want to delete this product?"
-        // onConfirm={handleConfirmDelete}
+        onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmDialog({ open: false, productId: null })}
       />
 

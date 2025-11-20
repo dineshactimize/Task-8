@@ -23,16 +23,18 @@ export const putProductDataError=(error)=>{
         payload:error
     }
 }
-export const putProductDataActionInitiate = () => {
+export const putProductDataActionInitiate = (productdata, id) => {
   return async function (dispatch) {
     dispatch(putProductDataStart());
-   
+
     try {
-      const res = await putProductApi();
-      dispatch(putProductDataSuccess(res.data.data));
+      const res = await putProductApi(productdata, id);
+      dispatch(putProductDataSuccess(res.data));
+      return res;
     } catch (error) {
       console.error("putHomeScreenDataError error", error);
       dispatch(putProductDataError(error.message));
+      throw error;
     }
   };
 };

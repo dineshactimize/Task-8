@@ -32,7 +32,7 @@ export const getProductDataActionInitiate = () => {
       
       dispatch(getProductDataSuccess(res));
     } catch (error) {
-      console.error("getHomeScreenDataError error", error);
+      console.error("getProductDataError error", error);
       dispatch(getProductDataError(error.message));
     }
   };

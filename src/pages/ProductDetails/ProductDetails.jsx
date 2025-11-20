@@ -5,6 +5,7 @@ import Loader from '../../components/Loader/Loader'
 import ConfirmDialog from '../../components/ConfirmDialog/ConfirmDialog'
 import { getProductDataActionInitiate } from '../../redux/actions/getProductAction'
 import { useDispatch, useSelector } from 'react-redux'
+import { deleteProductDataActionInitiate } from '../../redux/actions/deleteProductAction'
 
 const ProductDetails = () => {
   const { id } = useParams()
@@ -34,18 +35,19 @@ const ProductDetails = () => {
       setProduct(null)
     }
   }, [getproductdata, id])
+  const handleDelete = async (id) => {
+    try {
+      await dispatch(deleteProductDataActionInitiate(id))
+      setConfirmOpen(false)
+      setSnackbar({ open: true, message: 'Product deleted', severity: 'success' })
+      navigate('/admin/products')
+    } catch (error) {
+      console.error('Delete failed', error)
+      setSnackbar({ open: true, message: 'Delete failed', severity: 'error' })
+      setConfirmOpen(false)
+    }
+  }
   
-
-
-  // const handleDelete = async () => {
-  //   try {
-  //     await deleteProduct(id)
-  //     setSnackbar({ open: true, message: 'Product deleted successfully', severity: 'success' })
-  //     setTimeout(() => navigate('/admin/products'), 1000)
-  //   } catch (err) {
-  //     setSnackbar({ open: true, message: 'Failed to delete product', severity: 'error' })
-  //   }
-  // }
 
   if (loading) return <Loader />
   if (!product) return <Typography>Product not found</Typography>
@@ -64,15 +66,11 @@ const ProductDetails = () => {
             </Typography>
 
             <Typography variant="h5" color="primary" mb={2}>
-              ${Number(product.price).toFixed(2)}
+              ₹{Number(product.price).toFixed(2)}
             </Typography>
 
             <Typography variant="body1" mb={2} color="textSecondary">
               <strong>Category:</strong> {product.category}
-            </Typography>
-
-            <Typography variant="body1" mb={2} color="textSecondary">
-              <strong>Rating:</strong> {product.rating?.rate ?? '-'} ({product.rating?.count ?? 0} reviews)
             </Typography>
 
             <Typography variant="body2" mb={4}>
@@ -114,8 +112,8 @@ const ProductDetails = () => {
       <ConfirmDialog
         open={confirmOpen}
         title="Delete Product"
-        message="Are you sure you want to delete this product? This action cannot be undone."
-        // onConfirm={handleDelete}
+        message="Are you sure you want to delete this product?"
+        onConfirm={() => handleDelete(id)}
         onCancel={() => setConfirmOpen(false)}
       />
 

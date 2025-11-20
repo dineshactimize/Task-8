@@ -78,7 +78,6 @@ class API {
         });
     });
   }
-  // Main function with hold the axios request param
   api(method, url, data) {
     return new Promise(( resolve,reject) => {
       console.log('this is mainAPI function');
@@ -87,7 +86,6 @@ class API {
       axiosConfig.url = this.baseURL + url;
       axiosConfig.headers = this.setHeaders(data);
       
-      //  console.log("axiosConfig.headers", axiosConfig.headers);
       if (data) {
         if (data) axiosConfig.data = data;
       }
@@ -103,7 +101,6 @@ class API {
             resolve(response);
             console.log("this is response1")
             if (response) {
-              // toast.success("success response");
             }
             else if (response.status === 200) {
               toast.success(' response success')
@@ -113,14 +110,12 @@ class API {
               toast.error("Something went wrong"); 
             }
           }
-          // console.log("response", response);
         })
         .catch((error) => {
           console.log("ERROR", error);
         });
     });
   }
-  // Set the header for request
   setHeaders(data) {
     let headers = {};
     console.log('this is headers');
